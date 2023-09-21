@@ -2,6 +2,7 @@ package org.soneech.springcourse.service;
 
 import org.soneech.springcourse.model.User;
 import org.soneech.springcourse.repository.UserRepository;
+import org.soneech.springcourse.util.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,6 @@ public class UserService {
     }
 
     public User findById(Long id) {
-        return userRepository.findById(id).orElse(null);
+        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 }

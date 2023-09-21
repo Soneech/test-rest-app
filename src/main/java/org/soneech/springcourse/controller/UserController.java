@@ -2,10 +2,11 @@ package org.soneech.springcourse.controller;
 
 import org.soneech.springcourse.model.User;
 import org.soneech.springcourse.service.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.soneech.springcourse.util.UserErrorResponse;
+import org.soneech.springcourse.util.UserNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,5 +27,15 @@ public class UserController {
     @GetMapping("/{id}")
     public User getUserById(@PathVariable("id") Long id) {
         return userService.findById(id);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<UserErrorResponse> handleException(UserNotFoundException exception) {
+        UserErrorResponse response = new UserErrorResponse(
+                "User with this id wasn't found",
+                System.currentTimeMillis()
+        );
+        // Response body - response (json), in header - status (NOT_FOUND)
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND); // 404 status
     }
 }
