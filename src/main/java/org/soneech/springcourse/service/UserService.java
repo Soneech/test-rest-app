@@ -5,10 +5,12 @@ import org.soneech.springcourse.repository.UserRepository;
 import org.soneech.springcourse.util.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class UserService {
     private final UserRepository userRepository;
 
@@ -23,5 +25,10 @@ public class UserService {
 
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+    }
+
+    @Transactional
+    public void save(User user) {
+        userRepository.save(user);
     }
 }
