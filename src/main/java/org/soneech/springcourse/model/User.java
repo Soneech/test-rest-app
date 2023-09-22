@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
@@ -21,16 +23,22 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "Укажите имя")
-    @Size(min = 2, max = 100, message = "Имя должно содержать от 2 до 100 символов")
+    @NotEmpty
+    @Size(min = 2, max = 100)
     private String username;
 
-    @Min(value = 0, message = "Возраст не может быть отрицательным")
+    @Min(value = 0)
     private int age;
 
     @Email
-    @NotEmpty(message = "Укажите почту")
+    @NotEmpty
     private String email;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
     public User(String username, int age, String email) {
         this.username = username;
